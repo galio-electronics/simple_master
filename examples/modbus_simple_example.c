@@ -5,7 +5,7 @@
  * Created on 20 de noviembre de 2025, 01:57 PM
  */
 
-#include "v2.h"
+#include "v1.h"
 
 // ========== CONFIG SIMPLE-MASTER ==========
 #define SMODBUS_BAUD          115200
@@ -21,7 +21,7 @@
 #define SMODBUS_RX_BUFFER     64                  // opcional
 
 #include "../simple_master.c"
-#include <bootloader.h>
+//#include <bootloader.h>
 #include <stdio.h>
 #include <stdlib.h>
 #define FW_VERSION "1.0.0"

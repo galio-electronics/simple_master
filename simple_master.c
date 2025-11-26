@@ -1,4 +1,7 @@
 #include "simple_master.h"
+
+// UART por hardware
+#use rs232(baud=SMODBUS_BAUD, xmit=SMODBUS_TX_PIN, rcv=SMODBUS_RX_PIN, ERRORS)
 // ===========================================================
 //  BUFFER CIRCULAR RX (INT_RDA)
 // ===========================================================
@@ -45,7 +48,7 @@ unsigned int8 smodbus_rx_get(void)
 }
 
 // ISR de recepción
-#INT_RDA
+#INT_RDA2
 void smodbus_isr_rda(void)
 {
    unsigned int8 c = getc();
