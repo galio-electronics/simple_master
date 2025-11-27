@@ -16,7 +16,7 @@
 #define SMODBUS_TX_PIN        TX_4              // UART TX
 
 #define SMODBUS_DE_PIN        TX_ENABLE              // DE RS485
-#define SMODBUS_RE_PIN        RX_ENABLE                   // 0 si está amarrado a GND o unido a DE
+#define SMODBUS_RE_PIN        RX_ENABLE                   // 0 si estï¿½ amarrado a GND o unido a DE
 
 
 #define SMODBUS_TIMEOUT_MS   1000   // 1 segundo
@@ -64,6 +64,7 @@ void main(void) {
         {
            // consumir regs[0..3]
             protolink_debug_msg("Response OK\r\n");
+            protolink_debug_data("data: %ld\r\n",regs[0]);
         }
         else{
             protolink_debug_msg("Fail\r\n");

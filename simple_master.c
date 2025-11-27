@@ -4,7 +4,7 @@
 
 //#use rs232(baud=SMODBUS_BAUD, xmit=SMODBUS_TX_PIN, rcv=SMODBUS_RX_PIN, ERRORS)
 //#use rs232(baud=115200,parity=N,UART4,bits=8,stream=SMODBUS_PORT,errors)
-#use rs232(baud=115200, UART4, bits=8, stop=2, parity=N, stream=SMODBUS_PORT, errors)
+#use rs232(baud=9600, UART4, bits=8, stop=2, parity=N, stream=SMODBUS_PORT, errors)
 // ===========================================================
 //  BUFFER CIRCULAR RX (INT_RDA)
 // ===========================================================
