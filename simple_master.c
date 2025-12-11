@@ -286,7 +286,7 @@ smodbus_status_t smodbus_transaction(unsigned int8 *req,
 // ===========================================================
 
 // 0x03: Leer N holding registers
-smodbus_status_t smodbus_read_holding(int8 slave,
+smodbus_status_t smodbus_read_holding(unsigned int8 slave,
                                       unsigned int16 start_address,
                                       unsigned int16 quantity,
                                       unsigned int16 *dest)
@@ -334,7 +334,7 @@ smodbus_status_t smodbus_read_holding(int8 slave,
 }
 
 // Azúcar para leer 1 registro
-static smodbus_status_t smodbus_read_holding_u16(int8 slave,
+static smodbus_status_t smodbus_read_holding_u16(unsigned int8 slave,
                                           unsigned int16 reg_address,
                                           unsigned int16 *value)
 {
@@ -342,7 +342,7 @@ static smodbus_status_t smodbus_read_holding_u16(int8 slave,
 }
 
 // 0x06: Escribir un solo holding register
-static smodbus_status_t smodbus_write_u16(int8 slave,
+static smodbus_status_t smodbus_write_u16(unsigned int8 slave,
                                    unsigned int16 reg_address,
                                    unsigned int16 value)
 {
