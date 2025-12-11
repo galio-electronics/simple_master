@@ -6,7 +6,7 @@
  * Ejemplo para manipular tarjetas de expansion modbus
  */
 
-#include "v1.h"
+#include "v2.h"
 
 // ========== CONFIG SIMPLE-MASTER ==========
 #define SMODBUS_DEBUG           1
