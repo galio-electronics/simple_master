@@ -8,7 +8,7 @@
 #include "v1.h"
 
 // ========== CONFIG SIMPLE-MASTER ==========
-#define SMODBUS_DEBUG           1
+#define SMODBUS_DEBUG           0
 #define SMODBUS_BAUD          115200
 #define SMODBUS_SERIAL_INT    SMODBUS_INT_RDA4      // o MODBUS_INT_RDA2 / MODBUS_INT_EXT
 
@@ -24,7 +24,7 @@
 #define SMODBUS_RX_BUFFER     64                  // opcional
 //#include "../simple_master.h"
 #include "../simple_master.c"
-//#include <bootloader.h>
+#include <bootloader.h>
 #include <stdio.h>
 #include <stdlib.h>
 #define FW_VERSION "1.0.0"
