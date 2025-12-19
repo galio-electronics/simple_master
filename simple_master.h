@@ -112,6 +112,13 @@ smodbus_status_t smodbus_write_u16(
     unsigned int16 value
 );
 
+// 0x04: Read Input Registers
+smodbus_status_t smodbus_read_input(unsigned int8 slave,
+                                    unsigned int16 start_address,
+                                    unsigned int16 quantity,
+                                    unsigned int16 *dest);
+
+
 
 // ===========================================================
 // NOTA IMPORTANTE

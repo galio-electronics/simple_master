@@ -59,7 +59,17 @@ unsigned int8 smodbus_rx_get(void)
 }
 
 // ISR de recepción
-#INT_RDA4
+#if (SMODBUS_SERIAL_INT_SOURCE==SMODBUS_INT_RDA)
+#int_rda
+#elif (SMODBUS_SERIAL_INT_SOURCE==SMODBUS_INT_RDA2)
+#int_rda2
+#elif (SMODBUS_SERIAL_INT_SOURCE==SMODBUS_INT_RDA3)
+#int_rda3
+#elif (SMODBUS_SERIAL_INT_SOURCE==SMODBUS_INT_RDA4)
+#int_rda4
+#elif (SMODBUS_SERIAL_INT_SOURCE==SMODBUS_INT_RDA5)
+#int_rda5
+#endif
 void smodbus_isr_rda(void)
 {
    unsigned int8 c = fgetc(SMODBUS_PORT);
@@ -257,7 +267,9 @@ smodbus_status_t smodbus_transaction(unsigned int8 *req,
                             SMODBUS_MAX_FRAME,
                             SMODBUS_TIMEOUT_MS,
                             SMODBUS_GAP_MS);
+#if SMODBUS_DEBUG == true
    fprintf(DEBUG,"Read frame len %d\r\n",len);
+#endif
    
    //Debug respuesta
    smodbus_debug_rx(resp, len);
@@ -341,6 +353,61 @@ smodbus_status_t smodbus_read_holding(unsigned int8 slave,
    return SMODBUS_OK;
 }
 
+// 0x04: Leer N input registers (Input Registers)
+smodbus_status_t smodbus_read_input(unsigned int8 slave,
+                                    unsigned int16 start_address,
+                                    unsigned int16 quantity,
+                                    unsigned int16 *dest)
+{
+   unsigned int8  req[8];
+   unsigned int8  resp[SMODBUS_MAX_FRAME];
+   unsigned int8  len, byte_count;
+   unsigned int16 crc;
+   unsigned int8  i;
+
+   // Armar peticion
+   req[0] = slave;
+   req[1] = 0x04;                      // Function code
+   req[2] = make8(start_address, 1);   // Hi
+   req[3] = make8(start_address, 0);   // Lo
+   req[4] = make8(quantity, 1);
+   req[5] = make8(quantity, 0);
+   crc = smodbus_crc16(req, 6);
+   req[6] = make8(crc, 0);             // CRC Lo
+   req[7] = make8(crc, 1);             // CRC Hi
+
+   smodbus_status_t st = smodbus_transaction(req, 8, resp, &len);
+   if(st != SMODBUS_OK)
+      return st;
+
+   // Validar slave y funcion
+   if(resp[0] != slave || resp[1] != 0x04)
+      return SMODBUS_ERR_FRAME;
+
+   byte_count = resp[2];
+   if(byte_count != (quantity * 2))
+      return SMODBUS_ERR_FRAME;
+
+   if(len < (3 + byte_count + 2))
+      return SMODBUS_ERR_FRAME;
+
+   for(i = 0; i < quantity; i++)
+   {
+      unsigned int8 hi = resp[3 + (2*i)];
+      unsigned int8 lo = resp[4 + (2*i)];
+      dest[i] = make16(hi, lo);
+   }
+
+   return SMODBUS_OK;
+}
+
+// Azucar para leer 1 input register
+static smodbus_status_t smodbus_read_input_u16(unsigned int8 slave,
+                                               unsigned int16 reg_address,
+                                               unsigned int16 *value)
+{
+   return smodbus_read_input(slave, reg_address, 1, value);
+}
 // Azúcar para leer 1 registro
 static smodbus_status_t smodbus_read_holding_u16(unsigned int8 slave,
                                           unsigned int16 reg_address,
@@ -398,6 +465,18 @@ void smodbus_init(void)
 #endif
 
    smodbus_rx_flush();
+   
+#if (SMODBUS_SERIAL_INT_SOURCE==SMODBUS_INT_RDA)
+   enable_interrupts(INT_RDA);
+#elif (SMODBUS_SERIAL_INT_SOURCE==SMODBUS_INT_RDA2)
+    enable_interrupts(INT_RDA2);
+#elif (SMODBUS_SERIAL_INT_SOURCE==SMODBUS_INT_RDA3)
+    enable_interrupts(INT_RDA3);
+#elif (SMODBUS_SERIAL_INT_SOURCE==SMODBUS_INT_RDA4)
+    enable_interrupts(INT_RDA4);
+#elif (SMODBUS_SERIAL_INT_SOURCE==SMODBUS_INT_RDA5)
+    enable_interrupts(INT_RDA5);
+#endif
 
    enable_interrupts(INT_RDA4);
    enable_interrupts(GLOBAL);
