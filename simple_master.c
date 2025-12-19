@@ -2,9 +2,17 @@
 
 // UART por hardware
 
-//#use rs232(baud=SMODBUS_BAUD, xmit=SMODBUS_TX_PIN, rcv=SMODBUS_RX_PIN, ERRORS)
-//#use rs232(baud=115200,parity=N,UART4,bits=8,stream=SMODBUS_PORT,errors)
-#use rs232(baud=9600, UART4, bits=8, stop=2, parity=N, stream=SMODBUS_PORT, errors)
+#if (SMODBUS_SERIAL_INT_SOURCE == SMODBUS_INT_RDA )
+#use rs232(baud=SMODBUS_BAUD, UART1, bits=8, stop=2, parity=N, stream=SMODBUS_PORT, errors)
+#elif (SMODBUS_SERIAL_INT_SOURCE == SMODBUS_INT_RDA2 )
+#use rs232(baud=SMODBUS_BAUD, UART2, bits=8, stop=2, parity=N, stream=SMODBUS_PORT, errors)
+#elif (SMODBUS_SERIAL_INT_SOURCE == SMODBUS_INT_RDA3 )
+#use rs232(baud=SMODBUS_BAUD, UART3, bits=8, stop=2, parity=N, stream=SMODBUS_PORT, errors)
+#elif (SMODBUS_SERIAL_INT_SOURCE == SMODBUS_INT_RDA4 )
+#use rs232(baud=SMODBUS_BAUD, UART4, bits=8, stop=2, parity=N, stream=SMODBUS_PORT, errors)
+#elif (SMODBUS_SERIAL_INT_SOURCE == SMODBUS_INT_RDA5 )
+#use rs232(baud=SMODBUS_BAUD, UART5, bits=8, stop=2, parity=N, stream=SMODBUS_PORT, errors)
+#endif
 // ===========================================================
 //  BUFFER CIRCULAR RX (INT_RDA)
 // ===========================================================

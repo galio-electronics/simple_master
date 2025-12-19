@@ -4,8 +4,17 @@
 // ===========================================================
 // CONFIGURACIÓN DEL DRIVER (puede redefinirse desde main)
 // ===========================================================
+#define SMODBUS_INT_RDA         7777
+#define SMODBUS_INT_RDA2        6666
+#define SMODBUS_INT_RDA3        5555
+#define SMODBUS_INT_RDA4        4444
+#define SMODBUS_INT_RD45        3333
 
 // Si no se define en main, se aplican defaults
+
+#ifndef SMODBUS_SERIAL_INT_SOURCE
+  #define SMODBUS_SERIAL_INT_SOURCE SMODBUS_INT_RDA   // Select between external interrupt
+ #endif
 #ifndef SMODBUS_BAUD
  #define SMODBUS_BAUD            9600
 #endif

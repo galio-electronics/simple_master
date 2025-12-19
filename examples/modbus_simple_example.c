@@ -10,7 +10,7 @@
 // ========== CONFIG SIMPLE-MASTER ==========
 #define SMODBUS_DEBUG           1
 #define SMODBUS_BAUD          115200
-#define SMODBUS_INT_SOURCE    MODBUS_INT_RDA      // o MODBUS_INT_RDA2 / MODBUS_INT_EXT
+#define SMODBUS_SERIAL_INT_SOURCE    SMODBUS_INT_RDA4      // o MODBUS_INT_RDA2 / MODBUS_INT_EXT
 
 #define SMODBUS_RX_PIN        RX_4              // UART RX
 #define SMODBUS_TX_PIN        TX_4              // UART TX
