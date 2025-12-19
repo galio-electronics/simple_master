@@ -134,6 +134,7 @@ static void smodbus_set_tx_mode(int1 enable)
    {
       fputc(data[i],SMODBUS_PORT);
    }
+   //delay_ms(2);
 
 //   // Espera a que se vacíe el shift register
 //   while(!tx_done())
