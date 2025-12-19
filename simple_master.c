@@ -2,17 +2,19 @@
 
 // UART por hardware
 
-#if (SMODBUS_SERIAL_INT_SOURCE == SMODBUS_INT_RDA )
-#use rs232(baud=SMODBUS_BAUD, UART1, bits=8, stop=2, parity=N, stream=SMODBUS_PORT, errors)
-#elif (SMODBUS_SERIAL_INT_SOURCE == SMODBUS_INT_RDA2 )
-#use rs232(baud=SMODBUS_BAUD, UART2, bits=8, stop=2, parity=N, stream=SMODBUS_PORT, errors)
-#elif (SMODBUS_SERIAL_INT_SOURCE == SMODBUS_INT_RDA3 )
-#use rs232(baud=SMODBUS_BAUD, UART3, bits=8, stop=2, parity=N, stream=SMODBUS_PORT, errors)
-#elif (SMODBUS_SERIAL_INT_SOURCE == SMODBUS_INT_RDA4 )
-#use rs232(baud=SMODBUS_BAUD, UART4, bits=8, stop=2, parity=N, stream=SMODBUS_PORT, errors)
-#elif (SMODBUS_SERIAL_INT_SOURCE == SMODBUS_INT_RDA5 )
-#use rs232(baud=SMODBUS_BAUD, UART5, bits=8, stop=2, parity=N, stream=SMODBUS_PORT, errors)
+#if (SMODBUS_SERIAL_INT == SMODBUS_INT_RDA )
+    #use rs232(baud=SMODBUS_BAUD, UART1, bits=8, stop=2, parity=N, stream=SMODBUS_PORT, errors)
+#elif (SMODBUS_SERIAL_INT == SMODBUS_INT_RDA2 )
+    #use rs232(baud=SMODBUS_BAUD, UART2, bits=8, stop=2, parity=N, stream=SMODBUS_PORT, errors)
+#elif (SMODBUS_SERIAL_INT == SMODBUS_INT_RDA3 )
+    #use rs232(baud=SMODBUS_BAUD, UART3, bits=8, stop=2, parity=N, stream=SMODBUS_PORT, errors)
+#elif (SMODBUS_SERIAL_INT == SMODBUS_INT_RDA4 )
+    #use rs232(baud=SMODBUS_BAUD, UART4, bits=8, stop=2, parity=N, stream=SMODBUS_PORT, errors)
+#elif (SMODBUS_SERIAL_INT == SMODBUS_INT_RDA5 )
+    #use rs232(baud=SMODBUS_BAUD, UART5, bits=8, stop=2, parity=N, stream=SMODBUS_PORT, errors)
 #endif
+
+
 // ===========================================================
 //  BUFFER CIRCULAR RX (INT_RDA)
 // ===========================================================
@@ -35,6 +37,7 @@ int1 smodbus_rx_overflowed(void)
 void smodbus_rx_flush(void)
 {
    disable_interrupts(GLOBAL);
+   clear_interrupt(INT_RDA4);
    smodbus_ring_head = 0;
    smodbus_ring_tail = 0;
    smodbus_ring_overflow = FALSE;
@@ -58,18 +61,19 @@ unsigned int8 smodbus_rx_get(void)
    return c;
 }
 
-// ISR de recepción
-#if (SMODBUS_SERIAL_INT_SOURCE==SMODBUS_INT_RDA)
+//// ISR de recepción
+#if (SMODBUS_SERIAL_INT==SMODBUS_INT_RDA)
 #int_rda
-#elif (SMODBUS_SERIAL_INT_SOURCE==SMODBUS_INT_RDA2)
+#elif (SMODBUS_SERIAL_INT==SMODBUS_INT_RDA2)
 #int_rda2
-#elif (SMODBUS_SERIAL_INT_SOURCE==SMODBUS_INT_RDA3)
+#elif (SMODBUS_SERIAL_INT==SMODBUS_INT_RDA3)
 #int_rda3
-#elif (SMODBUS_SERIAL_INT_SOURCE==SMODBUS_INT_RDA4)
+#elif (SMODBUS_SERIAL_INT==SMODBUS_INT_RDA4)
 #int_rda4
-#elif (SMODBUS_SERIAL_INT_SOURCE==SMODBUS_INT_RDA5)
+#elif (SMODBUS_SERIAL_INT==SMODBUS_INT_RDA5)
 #int_rda5
 #endif
+
 void smodbus_isr_rda(void)
 {
    unsigned int8 c = fgetc(SMODBUS_PORT);
@@ -466,19 +470,19 @@ void smodbus_init(void)
 
    smodbus_rx_flush();
    
-#if (SMODBUS_SERIAL_INT_SOURCE==SMODBUS_INT_RDA)
+#if (SMODBUS_SERIAL_INT==SMODBUS_INT_RDA)
    enable_interrupts(INT_RDA);
-#elif (SMODBUS_SERIAL_INT_SOURCE==SMODBUS_INT_RDA2)
+#elif (SMODBUS_SERIAL_INT==SMODBUS_INT_RDA2)
     enable_interrupts(INT_RDA2);
-#elif (SMODBUS_SERIAL_INT_SOURCE==SMODBUS_INT_RDA3)
+#elif (SMODBUS_SERIAL_INT==SMODBUS_INT_RDA3)
     enable_interrupts(INT_RDA3);
-#elif (SMODBUS_SERIAL_INT_SOURCE==SMODBUS_INT_RDA4)
+#elif (SMODBUS_SERIAL_INT==SMODBUS_INT_RDA4)
     enable_interrupts(INT_RDA4);
-#elif (SMODBUS_SERIAL_INT_SOURCE==SMODBUS_INT_RDA5)
+    clear_interrupt(INT_RDA4);
+#elif (SMODBUS_SERIAL_INT==SMODBUS_INT_RDA5)
     enable_interrupts(INT_RDA5);
 #endif
 
-   enable_interrupts(INT_RDA4);
    enable_interrupts(GLOBAL);
 }
 

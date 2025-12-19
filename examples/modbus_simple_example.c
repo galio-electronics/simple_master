@@ -10,7 +10,7 @@
 // ========== CONFIG SIMPLE-MASTER ==========
 #define SMODBUS_DEBUG           1
 #define SMODBUS_BAUD          115200
-#define SMODBUS_SERIAL_INT_SOURCE    SMODBUS_INT_RDA4      // o MODBUS_INT_RDA2 / MODBUS_INT_EXT
+#define SMODBUS_SERIAL_INT    SMODBUS_INT_RDA4      // o MODBUS_INT_RDA2 / MODBUS_INT_EXT
 
 #define SMODBUS_RX_PIN        RX_4              // UART RX
 #define SMODBUS_TX_PIN        TX_4              // UART TX
@@ -22,7 +22,7 @@
 #define SMODBUS_TIMEOUT_MS   1000   // 1 segundo
 #define SMODBUS_GAP_MS       500     // 50 ms de silencio para ?fin de trama?
 #define SMODBUS_RX_BUFFER     64                  // opcional
-#include "../simple_master.h"
+//#include "../simple_master.h"
 #include "../simple_master.c"
 //#include <bootloader.h>
 #include <stdio.h>
@@ -50,7 +50,7 @@ void main(void) {
     output_low(LED2);
     int16 regs[4];
     smodbus_status_t st;
-    int16 value;
+    //int16 value;
 
     smodbus_init();   // Inicializa Modbus
     while (true) {
@@ -68,6 +68,17 @@ void main(void) {
         }
         else{
             protolink_debug_msg("Fail\r\n");
+        }
+        
+        st = smodbus_read_input(2, 0x3100, 1, regs);
+        if(st == SMODBUS_OK)
+        {
+           // consumir regs[0..3]
+            protolink_debug_msg("0x3100 Response OK\r\n");
+            protolink_debug_data("data: %ld\r\n",regs[0]);
+        }
+        else{
+            protolink_debug_msg("0x3100 Fail\r\n");
         }
         
      

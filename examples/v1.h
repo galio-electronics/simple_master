@@ -93,8 +93,8 @@
 void protolink_io_init(void)
 {
    // Primero todo como entrada (safe mode)
-   set_tris_a(0xFF);   // si no usas A, déjalo así
-   set_tris_b(0xFF);   // B todo entrada (botón / optos / RTC_INT)
+   set_tris_a(0xFF);   // si no usas A, dï¿½jalo asï¿½
+   set_tris_b(0xFF);   // B todo entrada (botï¿½n / optos / RTC_INT)
    
    // C: UART1, UART4, I2C
    set_tris_c(0b10111110);   // C7 RX1 in, C6 TX1 out, C1 RX4 in, C0 TX4 out, SCL/SDA in
@@ -119,7 +119,7 @@ void protolink_io_init(void)
 }
 
 
-#define LOADER_END   0x5FF  //ajuste de memoria para protolink v2 bootloader
+//#define LOADER_END   0x5FF  //ajuste de memoria para protolink v2 bootloader
 #endif	/* PROTOLINK_H */
 
 
